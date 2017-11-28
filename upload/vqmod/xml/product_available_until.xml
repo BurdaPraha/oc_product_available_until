@@ -4,7 +4,6 @@
     <vqmver>2.1.5</vqmver>
     <author>Michal Landsman</author>
 
-
     <!-- FRONTEND -->
 
     <!-- change method "public function getProducts" -->
@@ -16,8 +15,9 @@
     </file>
 
 
-
     <!-- BACKEND -->
+
+    <!-- add language keywords -->
     <file name="admin/language/cs-cz/catalog/product.php">
         <operation>
             <search position="after"><![CDATA[
@@ -29,6 +29,18 @@
         </operation>
     </file>
 
+    <file path="admin/language/" name="en-gb/catalog/product.php,english/catalog/product.php">
+        <operation>
+            <search position="after"><![CDATA[
+                <?php
+            ]]></search>
+            <add><![CDATA[
+                $_['entry_date_available_until'] = 'Date Available To';
+            ]]></add>
+        </operation>
+    </file>
+
+    <!-- add form field -->
     <file name="admin/view/template/catalog/product_form.tpl">
         <operation>
             <search position="before" offset="1"><![CDATA[<label class="col-sm-2 control-label" for="input-length"><?php echo $entry_dimension; ?></label>]]></search>
@@ -51,6 +63,7 @@
         </operation>
     </file>
 
+    <!-- improve model saving for new cell -->
     <file name="admin/controller/catalog/product.php">
         <operation>
             <search position="after"><![CDATA[$data['entry_date_available'] = $this->language->get('entry_date_available');]]></search>
@@ -78,6 +91,5 @@
             <add><![CDATA[date_available = '" . $this->db->escape($data['date_available']) . "', date_available_until = '" . $this->db->escape($data['date_available_until']) . "',]]></add>
         </operation>
     </file>
-
 
 </modification>

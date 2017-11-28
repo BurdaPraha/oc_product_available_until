@@ -2,6 +2,8 @@
 
 Improving admin form for new field "Date until:". After this date product will be invisible.
 
+![Show](./doc/show.png)
+
 ## Installation
 
 1. Requiring installed [vQmod](https://github.com/vqmod/vqmod) because vQmod doesn't support installing via composer itself.
