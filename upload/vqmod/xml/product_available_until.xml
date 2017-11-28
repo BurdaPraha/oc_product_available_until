@@ -1,0 +1,83 @@
+<modification>
+    <id>Product Available until the date - Burda Praha</id>
+    <version>0.0.1</version>
+    <vqmver>2.1.5</vqmver>
+    <author>Michal Landsman</author>
+
+
+    <!-- FRONTEND -->
+
+    <!-- change method "public function getProducts" -->
+    <file name="catalog/model/catalog/product.php">
+        <operation error="log">
+            <search position="replace"><![CDATA[p.status = '1']]></search>
+            <add><![CDATA[p.status = '1' AND IF(p.date_available_until != '0000-00-00', p.date_available_until, '2040-01-01') >= NOW()]]></add>
+        </operation>
+    </file>
+
+
+
+    <!-- BACKEND -->
+    <file name="admin/language/cs-cz/catalog/product.php">
+        <operation>
+            <search position="after"><![CDATA[
+				<?php
+			]]></search>
+            <add><![CDATA[
+                $_['entry_date_available_until'] = 'Dostupný do:';
+			]]></add>
+        </operation>
+    </file>
+
+    <file name="admin/view/template/catalog/product_form.tpl">
+        <operation>
+            <search position="before" offset="1"><![CDATA[<label class="col-sm-2 control-label" for="input-length"><?php echo $entry_dimension; ?></label>]]></search>
+            <add>
+                <![CDATA[
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-date-available-until"><?php echo $entry_date_available_until; ?></label>
+                    <div class="col-sm-3">
+                      <div class="input-group date">
+                        <input type="text" name="date_available_until" value="<?php echo $date_available_until; ?>" placeholder="<?php echo $entry_date_available_until; ?>" data-date-format="YYYY-MM-DD" id="input-date-available-until" class="form-control" />
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+                        </span></div>
+                    </div>
+                  </div>
+
+                ]]>
+            </add>
+        </operation>
+    </file>
+
+    <file name="admin/controller/catalog/product.php">
+        <operation>
+            <search position="after"><![CDATA[$data['entry_date_available'] = $this->language->get('entry_date_available');]]></search>
+            <add><![CDATA[$data['entry_date_available_until'] = $this->language->get('entry_date_available_until');]]></add>
+        </operation>
+        <operation>
+            <search position="before"><![CDATA[if (isset($this->request->post['quantity'])) {]]></search>
+            <add>
+                <![CDATA[
+                    if (isset($this->request->post['date_available_until'])) {
+                        $data['date_available_until'] = $this->request->post['date_available_until'];
+                    } elseif (!empty($product_info)) {
+                        $data['date_available_until'] = ($product_info['date_available_until'] != '0000-00-00') ? $product_info['date_available_until'] : '';
+                    } else {
+                        $data['date_available_until'] = date('Y-m-d');
+                    }
+                ]]>
+            </add>
+        </operation>
+    </file>
+
+    <file name="admin/model/catalog/product.php">
+        <operation>
+            <search position="replace"><![CDATA[date_available = '" . $this->db->escape($data['date_available']) . "',]]></search>
+            <add><![CDATA[date_available = '" . $this->db->escape($data['date_available']) . "', date_available_until = '" . $this->db->escape($data['date_available_until']) . "',]]></add>
+        </operation>
+    </file>
+
+
+</modification>
