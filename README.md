@@ -5,7 +5,7 @@ Improving admin form for new field "Date until:". After this date product will b
 ## Installation
 
 1. Requiring installed [vQmod](https://github.com/vqmod/vqmod) because vQmod doesn't support installing via composer itself.
-2. `composer require burdapraha/oc_product_available_until`
+2. `composer require burdapraha/oc_product_available_until dev-master`
 3. `composer require sasedev/composer-plugin-filecopier` for files manipulating
 4. Add this code to your composer.json project file, extra section:
 
